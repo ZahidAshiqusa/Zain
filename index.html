@@ -1,388 +1,306 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Neon Locker — Demo</title>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg1:#0f0f1a;
-    --neon-cyan:#00f0ff;
-    --neon-pink:#ff3ec4;
-    --glass: rgba(255,255,255,0.03);
-    --accent: linear-gradient(90deg,var(--neon-cyan),var(--neon-pink));
-  }
-  html,body{height:100%;margin:0;font-family: "Share Tech Mono", monospace;background: radial-gradient(1200px 600px at 10% 10%, rgba(0,255,255,0.02), transparent), radial-gradient(1000px 500px at 90% 90%, rgba(255,62,196,0.02), transparent), var(--bg1); color:#cfefff; -webkit-font-smoothing:antialiased;}
-  .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;gap:28px;padding:32px;}
-  .panel{width:980px;max-width:96%;border-radius:16px;padding:24px;background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 0 40px rgba(0,255,255,0.03); border: 1px solid rgba(255,255,255,0.03); position:relative; overflow:hidden;}
-  /* animated grid background */
-  .panel::before{
-    content:"";position:absolute;inset:0;background-image:
-      linear-gradient(transparent 49%, rgba(255,255,255,0.02) 50%),
-      linear-gradient(90deg, transparent 49%, rgba(255,255,255,0.02) 50%);
-    background-size: 60px 60px, 60px 60px;opacity:0.6;mix-blend-mode:overlay;transform:translateZ(0);
-    animation: gridShift 12s linear infinite;
-    pointer-events:none;
-  }
-  @keyframes gridShift { from{transform:translateY(0)} to{transform:translateY(-60px)} }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BLACK KILLER — TikTok Downloader</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;600;700&display=swap');
 
-  header{display:flex;align-items:center;gap:18px;margin-bottom:18px;}
-  .logo{
-    width:64px;height:64px;border-radius:10px;background:var(--accent);
-    display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;
-    color:#081018;font-weight:700;box-shadow:0 6px 30px rgba(0,255,255,0.08), inset 0 -6px 18px rgba(0,0,0,0.2);
-    transform:skewX(-8deg);
-  }
-  h1{font-size:20px;margin:0;color:linear-gradient(var(--neon-cyan),var(--neon-pink));letter-spacing:1px}
-  p.lead{margin:0;color: #9fe7ff88;font-size:13px}
+    :root{
+      --bg-1: #07060a;
+      --bg-2: #12070a;
+      --accent: #ff2d2d;
+      --accent-2: #ff6a6a;
+      --glass: rgba(255,255,255,0.04);
+      --glass-border: rgba(255,45,45,0.14);
+      --muted: rgba(255,255,255,0.65);
+    }
 
-  .grid{display:grid;grid-template-columns: 1fr 360px;gap:18px;}
-  .left{padding:16px;background:rgba(255,255,255,0.01);border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
-  .right{padding:16px;background:linear-gradient(180deg, rgba(0,0,0,0.15), rgba(255,255,255,0.01)); border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
-  label.btn{
-    display:inline-block;padding:10px 14px;border-radius:10px;background:transparent;border:1px dashed rgba(255,255,255,0.06);cursor:pointer;margin-right:10px;font-size:13px;
-  }
-  input[type=file]{display:none}
-  .file-list{margin-top:12px; font-size:13px; color:#bfefff88}
-  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-  .control{background:var(--glass);padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.02);min-width:110px;text-align:center}
-  .control small{display:block;color:#9fe7ff88;font-size:11px}
-  .big-btn{display:inline-block;padding:12px 18px;border-radius:12px;background:transparent;border:2px solid rgba(255,255,255,0.06);cursor:pointer;font-weight:700}
-  .neon{
-    background: linear-gradient(90deg,var(--neon-cyan),var(--neon-pink));
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-    filter:drop-shadow(0 0 12px rgba(0,255,255,0.08));
-  }
+    html,body{height:100%;}
+    body{
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(255,45,45,0.04), transparent),
+                  linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+      color: #fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      padding-bottom:40px;
+    }
 
-  .simulator{margin-top:12px;padding:12px;border-radius:10px;background:linear-gradient(90deg, rgba(0,0,0,0.25), rgba(255,255,255,0.01));font-family:monospace;font-size:13px;color:#bfefff}
-  .tries { font-size:28px;font-weight:700;letter-spacing:2px;margin-top:6px}
-  .progress{height:12px;border-radius:8px;background:rgba(255,255,255,0.03);overflow:hidden;margin-top:8px}
-  .progress > i{display:block;height:100%;width:0;background:var(--accent);transition:width 120ms linear}
+    /* Header */
+    .brand-title{font-family:'Orbitron',sans-serif;letter-spacing:0.6px}
+    .neon{
+      text-shadow: 0 0 8px rgba(255,45,45,0.9), 0 0 20px rgba(255,45,45,0.35);
+    }
 
-  /* unlock card */
-  .card{
-    margin-top:10px;padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(20,20,30,0.8), rgba(10,10,16,0.6));
-    border:1px solid rgba(255,255,255,0.03); text-align:center;
-  }
-  .code-box{
-    margin-top:12px;padding:12px;border-radius:10px;background:rgba(0,0,0,0.6);font-family:'Orbitron',monospace;font-size:20px;color:#d3faff;letter-spacing:2px;
-    border:1px solid rgba(255,255,255,0.03);
-  }
+    /* unified card */
+    .card-glass{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(8px) saturate(120%);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      border-radius: 14px;
+    }
 
-  footer{margin-top:14px;text-align:center;color:#9fe7ff77;font-size:12px}
-  /* small responsive */
-  @media(max-width:880px){ .grid{grid-template-columns:1fr} .right{order:-1} }
-  .glow-border{
-    position:relative;border-radius:12px;padding:2px;background:linear-gradient(90deg, rgba(0,255,255,0.06), rgba(255,62,196,0.06));
-  }
-  .btn-primary{
-    padding:10px 14px;border-radius:10px;border:none;background:transparent;color:#cfefff;font-weight:700;cursor:pointer;
-    box-shadow: 0 6px 28px rgba(0,255,255,0.03), inset 0 -6px 20px rgba(0,0,0,0.25);
-  }
-  .status-line{font-size:13px;margin-top:8px;color:#9fe7ff88}
-</style>
+    /* button styles */
+    .btn-accent{
+      background: linear-gradient(90deg,var(--accent),var(--accent-2));
+      box-shadow: 0 6px 30px rgba(255,45,45,0.18);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .btn-accent:hover{transform:translateY(-4px);box-shadow:0 10px 40px rgba(255,45,45,0.26)}
+
+    /* subtle floating animation */
+    .float-slow{animation:floatSlow 4.5s ease-in-out infinite}
+    @keyframes floatSlow{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
+
+    /* spinner */
+    .spinner{border:4px solid rgba(255,255,255,0.06);border-top-color:var(--accent);border-radius:999px;width:44px;height:44px;animation:spin .9s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* thumbnail play hover */
+    .thumb-wrap{position:relative;overflow:hidden;border-radius:10px}
+    .play-btn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .18s ease}
+    .thumb-wrap:hover .play-btn{opacity:1;background:linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.45))}
+
+    /* floating social column */
+    .social-column{position:fixed;left:18px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;z-index:60}
+
+    /* modal */
+    .modal-backdrop{position:fixed;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.55),rgba(0,0,0,0.7));display:flex;align-items:center;justify-content:center;z-index:80}
+    .modal-card{width:100%;max-width:520px;padding:1.6rem;border-radius:12px}
+
+    /* small helpers */
+    .muted{color:var(--muted)}
+    .tag{background:rgba(255,255,255,0.03);padding:.25rem .6rem;border-radius:999px;font-weight:600}
+
+    /* responsive tweaks */
+    @media (max-width:640px){.social-column{display:none}}
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="panel">
-    <header>
-      <div class="logo">NL</div>
-      <div>
-        <h1 class="neon">Neon Locker — Visual Demo</h1>
-        <p class="lead">A stylish, animated, safe demonstration of an "unlock" flow (no brute force or real cracking).</p>
+  <!-- floating socials -->
+  <div class="social-column">
+    <a class="card-glass w-14 h-14 flex items-center justify-center" href="#" title="Info">
+      <i class="fa-solid fa-circle-info text-xl text-red-400"></i>
+    </a>
+    <a class="card-glass w-14 h-14 flex items-center justify-center" href="#" title="WhatsApp">
+      <i class="fa-brands fa-whatsapp text-xl text-green-400"></i>
+    </a>
+    <a class="card-glass w-14 h-14 flex items-center justify-center" href="#" title="YouTube">
+      <i class="fa-brands fa-youtube text-xl text-red-500"></i>
+    </a>
+  </div>
+
+  <main class="container mx-auto px-4 py-10 max-w-4xl">
+    <!-- header -->
+    <header class="flex flex-col items-center gap-4 mb-8">
+      <div class="flex items-center gap-4">
+        <img src="https://i.ibb.co/pB60dMGT/22342.jpg" alt="logo" class="w-20 h-20 rounded-full object-cover border-2 border-red-600 shadow-md float-slow">
+        <div class="text-left">
+          <h1 class="brand-title text-3xl md:text-4xl neon">BLACK KILLER</h1>
+          <p class="muted text-sm">TikTok downloader — high quality • no watermark (when available)</p>
+        </div>
+      </div>
+
+      <div class="w-full mt-4 card-glass p-4 grid grid-cols-1 md:grid-cols-3 gap-3 items-center">
+        <input id="tiktok-url" type="text" placeholder="Paste TikTok video URL here..." class="col-span-2 bg-transparent outline-none px-4 py-3 rounded-lg border border-transparent focus:border-red-400 placeholder:text-gray-400" />
+        <button id="download-btn" class="btn-accent text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2">
+          <i class="fa-solid fa-download"></i> Download
+        </button>
       </div>
     </header>
 
-    <div class="grid">
-      <div class="left">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <label class="btn">Upload ZIP
-              <input id="zipFile" type="file" accept=".zip"/>
-            </label>
-            <label class="btn">Upload password.txt
-              <input id="pwdFile" type="file" accept=".txt"/>
-            </label>
-          </div>
-          <div style="text-align:right">
-            <div style="font-size:12px;color:#9fe7ff88">Demo Mode</div>
-            <button id="simulateBtn" class="big-btn">Simulate</button>
-          </div>
-        </div>
-
-        <div class="file-list" id="fileList">No file selected.</div>
-
-        <div style="margin-top:12px">
-          <div style="display:flex;gap:8px;align-items:center">
-            <input id="manualPwd" type="password" placeholder="Enter password manually" style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:#cfefff"/>
-            <button id="unlockBtn" class="glow-border"><button class="btn-primary" id="unlockInner">UNLOCK</button></button>
-          </div>
-          <div class="status-line" id="statusLine">Status: idle</div>
-        </div>
-
-        <div class="simulator" id="simulator">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div>
-              <small>Simulated attempts per second</small>
-              <div style="font-weight:700" id="speedLabel">50,000 / sec</div>
-            </div>
-            <div style="text-align:right">
-              <small>Simulated tries</small>
-              <div class="tries" id="triesCount">0</div>
-            </div>
-          </div>
-
-          <div class="progress" aria-hidden><i id="progressBar"></i></div>
-
-          <div style="display:flex;gap:8px;margin-top:8px">
-            <div class="control">
-              <small>Speed</small>
-              <input id="speed" type="range" min="100" max="200000" value="50000" style="width:140px">
-            </div>
-            <div class="control">
-              <small>Sim duration</small>
-              <select id="duration">
-                <option value="2000">2 sec</option>
-                <option value="5000" selected>5 sec</option>
-                <option value="10000">10 sec</option>
-                <option value="30000">30 sec</option>
-              </select>
-            </div>
-            <div class="control">
-              <small>Auto open on success</small>
-              <div><input id="autoOpen" type="checkbox" checked> yes</div>
-            </div>
-          </div>
-
-          <div class="card" id="resultCard" style="display:none">
-            <div style="font-size:13px;color:#9fe7ff88">Unlock Status</div>
-            <div class="code-box" id="unlockCode">— — —</div>
-            <div style="margin-top:10px">
-              <button id="copyBtn" class="big-btn">Copy Code</button>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="right">
-        <div style="display:flex;flex-direction:column;gap:10px">
-          <div style="padding:12px;border-radius:10px;background:rgba(0,0,0,0.6);">
-            <div style="font-size:13px;color:#9fe7ff88">Console</div>
-            <pre id="log" style="height:260px;overflow:auto;margin:8px 0 0;border-radius:8px;padding:10px;background:rgba(0,0,0,0.3);font-family:monospace;color:#cfefff;font-size:12px">Awaiting input...</pre>
-          </div>
-
-          <div style="padding:12px;border-radius:10px;background:linear-gradient(90deg, rgba(255,255,255,0.01), rgba(0,0,0,0.25));">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <div>
-                <div style="font-size:13px;color:#9fe7ff88">Quick actions</div>
-                <div style="font-size:12px;color:#bfefff">Use the simulated demo for show; real unlock requires the exact password you provide.</div>
-              </div>
-              <div>
-                <button id="resetBtn" class="big-btn">Reset</button>
-              </div>
-            </div>
-
-            <div style="margin-top:10px;display:flex;gap:8px">
-              <button id="showPwdBtn" class="big-btn">Show uploaded pwd</button>
-              <button id="forceSuccess" class="big-btn">Force Success (demo)</button>
-            </div>
-          </div>
-
-        </div>
-      </div>
+    <!-- loading -->
+    <div id="loading" class="hidden justify-center my-6">
+      <div class="spinner"></div>
     </div>
 
-    <footer>Made with neon vibes — safe demo only. Do not use to attack systems.</footer>
+    <!-- results -->
+    <section id="results" class="hidden mt-6">
+      <div class="card-glass p-5">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="thumb-wrap md:col-span-1">
+            <img id="video-thumbnail" src="" alt="thumbnail" class="w-full h-44 object-cover rounded-lg">
+            <div class="play-btn">
+              <button id="play-preview" class="bg-black/40 backdrop-blur-sm p-3 rounded-full border border-red-500">
+                <i class="fa-solid fa-play text-xl text-white"></i>
+              </button>
+            </div>
+          </div>
 
+          <div class="md:col-span-2 flex flex-col gap-3">
+            <div class="flex items-start justify-between">
+              <div>
+                <h2 id="video-title" class="text-lg font-semibold">—</h2>
+                <p id="video-author" class="muted text-sm mt-1">—</p>
+              </div>
+              <div class="flex gap-2 items-center">
+                <span id="video-plays" class="tag">—</span>
+                <span id="video-likes" class="tag">—</span>
+              </div>
+            </div>
+
+            <p id="video-desc" class="muted text-sm">Description will appear here when available.</p>
+
+            <div class="flex flex-wrap gap-3 mt-3">
+              <a id="download-no-watermark" class="inline-flex items-center gap-2 tag" href="#" download> <i class="fa-solid fa-film"></i> No Watermark</a>
+              <a id="download-with-watermark" class="inline-flex items-center gap-2 tag" href="#" download> <i class="fa-solid fa-film"></i> With Watermark</a>
+              <a id="download-music" class="inline-flex items-center gap-2 tag" href="#" download> <i class="fa-solid fa-music"></i> Music</a>
+            </div>
+
+            <div class="mt-4 flex gap-3">
+              <button id="copy-links" class="px-4 py-2 rounded-lg bg-amber-600/90 font-medium">Copy Links</button>
+              <button id="open-in-new" class="px-4 py-2 rounded-lg border border-white/10">Open Video</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- footer -->
+    <footer class="mt-10 text-center muted text-sm">© 2025 <strong class="text-red-300">BLACK KILLER</strong>. Developed by Ramzan Ahsan</footer>
+  </main>
+
+  <!-- Modal (hidden by default) -->
+  <div id="modal" class="modal-backdrop hidden">
+    <div class="modal-card card-glass p-6">
+      <button id="close-modal" class="float-right text-gray-300"><i class="fa-solid fa-x fa-lg"></i></button>
+      <h3 class="text-xl font-semibold mb-2">Welcome to BLACK KILLER</h3>
+      <p class="muted">Paste a TikTok link and tap Download. If the downloader API blocks requests due to CORS, run this page from a simple static host (Vercel/Netlify) or use a small proxy.</p>
+      <div class="mt-4 flex justify-end">
+        <button id="dismiss-modal" class="px-4 py-2 btn-accent rounded-md">Got it</button>
+      </div>
+    </div>
   </div>
-</div>
 
-<script>
-  // Safe demo script:
-  const zipFile = document.getElementById('zipFile');
-  const pwdFile = document.getElementById('pwdFile');
-  const fileList = document.getElementById('fileList');
-  const manualPwd = document.getElementById('manualPwd');
-  const unlockBtn = document.getElementById('unlockInner');
-  const log = document.getElementById('log');
-  const triesCountEl = document.getElementById('triesCount');
-  const progressBar = document.getElementById('progressBar');
-  const speed = document.getElementById('speed');
-  const speedLabel = document.getElementById('speedLabel');
-  const durationSel = document.getElementById('duration');
-  const simulator = document.getElementById('simulator');
-  const simulateBtn = document.getElementById('simulateBtn');
-  const resultCard = document.getElementById('resultCard');
-  const unlockCode = document.getElementById('unlockCode');
-  const copyBtn = document.getElementById('copyBtn');
-  const resetBtn = document.getElementById('resetBtn');
-  const showPwdBtn = document.getElementById('showPwdBtn');
-  const forceSuccess = document.getElementById('forceSuccess');
-  const autoOpen = document.getElementById('autoOpen');
+  <!-- lightweight video preview element (hidden) -->
+  <video id="video-preview" class="hidden fixed inset-0 m-auto max-h-[80vh] max-w-[90vw] rounded-lg z-90" controls></video>
 
-  let uploadedZip = null;
-  let uploadedPwdText = null; // if user uploads password.txt, read its content
-  let runningSim = false;
-  let tries = 0;
+  <script>
+    // Small, robust JS: avoids global leaks and adds graceful features
+    (function(){
+      const $ = id => document.getElementById(id);
+      const downloadBtn = $('download-btn');
+      const urlInput = $('tiktok-url');
+      const loading = $('loading');
+      const results = $('results');
+      const modal = $('modal');
+      const dismiss = $('dismiss-modal');
+      const closeModal = $('close-modal');
 
-  function logLine(text){
-    const time = new Date().toLocaleTimeString();
-    log.textContent = `[${time}] ${text}\n` + log.textContent;
-  }
+      // result elements
+      const videoTitle = $('video-title');
+      const videoAuthor = $('video-author');
+      const videoDesc = $('video-desc');
+      const videoThumbnail = $('video-thumbnail');
+      const videoPlays = $('video-plays');
+      const videoLikes = $('video-likes');
+      const dlNo = $('download-no-watermark');
+      const dlWm = $('download-with-watermark');
+      const dlMusic = $('download-music');
+      const playPreview = $('play-preview');
+      const videoPreviewEl = $('video-preview');
+      const copyLinksBtn = $('copy-links');
+      const openNewBtn = $('open-in-new');
 
-  zipFile.addEventListener('change', (e) => {
-    const f = e.target.files[0];
-    if (!f) { uploadedZip = null; fileList.textContent = "No file selected."; logLine("ZIP removed."); return; }
-    uploadedZip = f;
-    fileList.textContent = `ZIP: ${f.name} • ${Math.round(f.size/1024)} KB`;
-    logLine(`ZIP selected: ${f.name}`);
-  });
+      // show modal on first load
+      setTimeout(()=>{ modal.classList.remove('hidden') }, 900);
 
-  pwdFile.addEventListener('change', (e) => {
-    const f = e.target.files[0];
-    if (!f) { uploadedPwdText = null; logLine("password.txt removed."); return; }
-    const reader = new FileReader();
-    reader.onload = () => {
-      uploadedPwdText = reader.result.replace(/\\r/g,'').trim();
-      logLine("password.txt loaded (first 64 chars shown): " + (uploadedPwdText.slice(0,64)));
-    };
-    reader.readAsText(f);
-  });
+      dismiss.addEventListener('click', ()=> modal.classList.add('hidden'));
+      closeModal.addEventListener('click', ()=> modal.classList.add('hidden'));
 
-  // Unlock action: REAL check only compares against provided password string.
-  unlockBtn.addEventListener('click', () => {
-    if (!uploadedZip) { alert("Please upload your ZIP file first (demo will only visually 'unlock')."); return; }
-    const candidate = manualPwd.value.trim();
-    if (!candidate && !uploadedPwdText) { alert("Enter a password manually or upload a password.txt containing the correct password."); return; }
-    // Real check:
-    const target = uploadedPwdText || null;
-    if (target && candidate === "") {
-      // If password.txt provided and user didn't type manual password, we'll use it to "unlock"
-      showSuccess(target);
-      return;
-    }
-    // If manual password provided, compare with uploadedPwdText if available; otherwise we only accept manual entry as the real password.
-    if (target) {
-      if (candidate === target) {
-        showSuccess(candidate);
-      } else {
-        logLine("Provided password does NOT match uploaded password.txt.");
-        alert("Password incorrect. This demo does not brute force — try the correct password or use the 'Force Success (demo)' button.");
-      }
-    } else {
-      // No uploaded pwd file — we treat the manual entry as the true password the user knows, so "unlock" immediately.
-      showSuccess(candidate);
-    }
-  });
+      // helper
+      function showLoading(){ loading.classList.remove('hidden'); results.classList.add('hidden') }
+      function hideLoading(){ loading.classList.add('hidden') }
+      function showResults(){ results.classList.remove('hidden') }
 
-  function showSuccess(theCode){
-    logLine("Unlock SUCCESS");
-    resultCard.style.display = "block";
-    unlockCode.textContent = theCode;
-    tries = Math.max(tries, 1);
-    triesCountEl.textContent = tries.toLocaleString();
-    progressBar.style.width = "100%";
-    if (autoOpen.checked) {
-      // For demo: simulate extracting the ZIP by creating a fake link to download the uploaded file (you uploaded it yourself)
-      if (uploadedZip) {
-        const blobUrl = URL.createObjectURL(uploadedZip);
-        const a = document.createElement('a');
-        a.href = blobUrl;
-        a.download = uploadedZip.name.replace('.zip','') + '_unlocked.zip';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        logLine("Simulated download triggered (demo).");
-      }
-    }
-  }
+      // number formatting
+      function fmt(n){ if(!n && n!==0) return '—'; if(n>=1e6) return (n/1e6).toFixed(1)+'M'; if(n>=1e3) return (n/1e3).toFixed(1)+'K'; return String(n) }
 
-  // Cosmetic simulation (NO REAL PASSWORD ATTEMPTS)
-  function runSimulation(durationMs){
-    if (runningSim) return;
-    runningSim = true;
-    resultCard.style.display = "none";
-    tries = 0;
-    triesCountEl.textContent = "0";
-    progressBar.style.width = "0%";
-    logLine("Simulation started");
-    const simSpeed = Number(speed.value); // displayed speed, but not used to guess
-    speedLabel.textContent = simSpeed.toLocaleString() + " / sec";
-    const start = performance.now();
-    const end = start + durationMs;
-    const totalSteps = Math.max(1, Math.floor((simSpeed * (durationMs/1000))));
-    let lastFrame = performance.now();
+      // main fetch logic
+      downloadBtn.addEventListener('click', async ()=>{
+        const url = urlInput.value.trim();
+        if(!url){ alert('Please paste a TikTok URL'); return }
+        if(!url.includes('tiktok.com')){ alert('That does not look like a TikTok URL'); return }
 
-    function step(now){
-      if (!runningSim) return;
-      const elapsed = now - start;
-      const pct = Math.min(1, elapsed / durationMs);
-      // simulate tries growing according to the chosen speed (but it's cosmetic only)
-      const currentTries = Math.floor(pct * totalSteps);
-      tries = currentTries;
-      triesCountEl.textContent = tries.toLocaleString();
-      progressBar.style.width = (pct*100) + "%";
-      if (now >= end) {
-        runningSim = false;
-        logLine("Simulation finished — no real cracking attempted.");
-        // If uploadedPwdText exists and matches manual value, we can show success automatically (safe)
-        if (uploadedPwdText && manualPwd.value.trim() === uploadedPwdText) {
-          showSuccess(uploadedPwdText);
-        } else {
-          // show that simulation ended with no success
-          resultCard.style.display = "none";
-          logLine("Simulation ended. To actually unlock provide the correct password or upload password.txt containing the password.");
+        showLoading();
+
+        try{
+          // Note: public APIs can block via CORS. This fetch assumes the API allows browser requests.
+          const controller = new AbortController();
+          const timeout = setTimeout(()=>controller.abort(), 15000);
+
+          const resp = await fetch('https://tikwm.com/api/?url=' + encodeURIComponent(url), { signal: controller.signal });
+          clearTimeout(timeout);
+
+          if(!resp.ok) throw new Error('Network response not ok: ' + resp.status);
+
+          const data = await resp.json();
+          if(data.code !== 0) throw new Error(data.msg || 'Failed to fetch data');
+
+          const info = data.data || {};
+
+          videoTitle.textContent = info.title || 'Untitled';
+          videoAuthor.textContent = 'By ' + (info.author?.nickname || 'Unknown');
+          videoDesc.textContent = info.description || (info.title ? '' : 'No description');
+          videoThumbnail.src = info.cover || '';
+
+          videoPlays.textContent = '👀 ' + fmt(info.play_count);
+          videoLikes.textContent = '❤️ ' + fmt(info.digg_count);
+
+          // set links — if empty, disable
+          function setLink(el, href){ if(href){ el.href = href; el.removeAttribute('aria-disabled'); el.classList.remove('opacity-40'); } else { el.href='#'; el.setAttribute('aria-disabled','true'); el.classList.add('opacity-40') } }
+
+          setLink(dlNo, info.play || info.dlink);
+          setLink(dlWm, info.wmplay);
+          setLink(dlMusic, info.music);
+
+          showResults();
+
+        }catch(err){
+          console.error(err);
+          alert('Error: ' + (err.name==='AbortError' ? 'Request timed out' : err.message));
+        }finally{
+          hideLoading();
         }
-        return;
-      }
-      requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
+      });
 
-  simulateBtn.addEventListener('click', () => {
-    const dur = Number(durationSel.value);
-    runSimulation(dur);
-  });
-  speed.addEventListener('input', () => {
-    speedLabel.textContent = Number(speed.value).toLocaleString() + " / sec";
-  });
+      // preview play
+      playPreview.addEventListener('click', ()=>{
+        const src = dlNo.href || dlWm.href || '';
+        if(!src || src === '#') return alert('No playable source available');
+        videoPreviewEl.src = src;
+        videoPreviewEl.classList.remove('hidden');
+        videoPreviewEl.play().catch(()=>{});
+        // close on click outside
+        videoPreviewEl.addEventListener('click', ()=>{ videoPreviewEl.pause(); videoPreviewEl.classList.add('hidden'); videoPreviewEl.src=''; }, { once:true })
+      });
 
-  // Reset:
-  resetBtn.addEventListener('click', () => {
-    uploadedZip = null; uploadedPwdText = null; fileList.textContent = "No file selected."; manualPwd.value = "";
-    resultCard.style.display = "none"; log.textContent = "Awaiting input...\n"; tries = 0; triesCountEl.textContent = "0"; progressBar.style.width = "0%";
-    logLine("Reset performed.");
-    // also clear file inputs
-    zipFile.value = ""; pwdFile.value = "";
-  });
+      // copy links
+      copyLinksBtn.addEventListener('click', ()=>{
+        const links = [dlNo.href, dlWm.href, dlMusic.href].filter(u=>u && u!=='#');
+        if(!links.length) return alert('No links to copy');
+        navigator.clipboard.writeText(links.join('\n')).then(()=>alert('Links copied to clipboard'))
+      });
 
-  // Show uploaded password (safe only because it's a file the user uploaded)
-  showPwdBtn.addEventListener('click', () => {
-    if (!uploadedPwdText) { alert("No password.txt uploaded."); return; }
-    alert("Uploaded password.txt content (first 512 chars):\\n\\n" + uploadedPwdText.slice(0,512));
-  });
+      // open original
+      openNewBtn.addEventListener('click', ()=>{
+        const src = dlNo.href || dlWm.href || '';
+        if(!src || src === '#') return alert('No video link');
+        window.open(src, '_blank');
+      });
 
-  // Force success (for demo scenes)
-  forceSuccess.addEventListener('click', () => {
-    if (!uploadedZip) { alert("Upload a ZIP to demo unlocking."); return; }
-    const fake = "DEMO-" + Math.random().toString(36).slice(2,10).toUpperCase();
-    showSuccess(fake);
-    logLine("Force success used (demo).");
-  });
+      // small UX: press enter to trigger
+      urlInput.addEventListener('keydown', (e)=>{ if(e.key === 'Enter'){ downloadBtn.click() } });
 
-  copyBtn.addEventListener('click', () => {
-    const text = unlockCode.textContent;
-    navigator.clipboard?.writeText(text).then(()=> {
-      logLine("Unlock code copied to clipboard.");
-      alert("Copied: " + text);
-    }).catch(()=> alert("Unable to copy."));
-  });
-
-  // small helper: disable real heavy CPU loops — we never do them.
-  // This demo intentionally avoids iterating through wordlists or attempting guesses.
-</script>
+    })();
+  </script>
 </body>
-    </html>
+  </html>
+              
